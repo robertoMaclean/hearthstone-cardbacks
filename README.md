@@ -1,19 +1,35 @@
-# HearthStoneApp
+# HearthStone Cardbacks
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.3.
+Este es un proyecto Realizado para una prueba técnica como desarrollador Fron End.
 
-## Development server
+![HearthStone Cardbacks App](image.png)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Tecnologías
 
-## Code scaffolding
+Este proyecto fue generado con [Angular CLI](https://github.com/angular/angular-cli) versión 17.2.3. Para ver la compatibilidad entre dependencias ir al siguiente link [Dependencias](https://angular.io/guide/versions).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## ¿Cómo Iniciar?
+
+- Clonar el proyecto.
+
+```bash
+git clone https://github.com/robertoMaclean/hearthstone-cardbacks.git
+```
+
+Ejecutar `ng serve` para correr en local la aplicación. Ir a `http://localhost:4200/`. La aplicación automáticamente se refrescará al detectar los cambios.
+
+## Generar directivas
+
+Ejecuta `ng generate component component-name` para generar un nuevo componente. Tambien puedes utilizar `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Ejecuta `ng build` para generar el build del proyecto. El resultado quedará guardado en el directorio `dist/`.
 
-## Further help
+## Demo
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Puedes ver la aplicación en el siguiente enlcace [HearthStone CardBacks Demo](https://hearthstone-cardbacks.netlify.app).
+
+## Ayuda
+
+Para obtener ayuda usando Angular CLI usa `ng help` ve a [Angular CLI Descripción general y lista de Commandos](https://angular.io/cli).
