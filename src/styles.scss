@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+
+body { margin: 0; background-color: darken($color: #000000, $amount: 0); }
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  margin: 10px 0px;
+  color: white;
+}

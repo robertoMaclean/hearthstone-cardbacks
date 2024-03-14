@@ -1,0 +1,21 @@
+<form [formGroup]="cardbackForm" (submit)="onUpdateSubmit(cardback)" >
+  <div class="container">
+    <mat-form-field class="form-input">
+      <mat-label>Name</mat-label>
+      <input matInput id="name" type="text" formControlName="name">
+    </mat-form-field>
+    <mat-form-field class="form-input">
+      <mat-label>How to acquired</mat-label>
+      <input matInput id="howToGet" type="text" formControlName="howToGet">
+    </mat-form-field>
+    <mat-form-field class="form-input">
+      <mat-label>Image URL</mat-label>
+      <input matInput id="img" type="text" formControlName="img">
+    </mat-form-field>
+    <mat-form-field class="form-input">
+      <mat-label>Description</mat-label>
+      <textarea matInput matInput id="description" formControlName="description"></textarea>
+    </mat-form-field>
+    <button mat-raised-button color="accent" type="submit" [disabled]="!cardbackForm.valid">Submit</button>
+  </div>
+</form>

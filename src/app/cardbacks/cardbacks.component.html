@@ -1,0 +1,43 @@
+<div class="container">
+  <mat-form-field class="search-input">
+    <mat-label>Search Cardbacks by name</mat-label>
+    <input matInput [(ngModel)]="searchInput" #search (keyup)="onSearch()" placeholder="Ex. Titanic">
+  </mat-form-field>
+</div>
+
+<div class="container">
+  <div class="container">
+    <button mat-fab (click)="createNew = !createNew" color="primary">
+      <mat-icon>{{!createNew?'fiber_new': 'cancel'}}</mat-icon>
+    </button>
+  </div>
+  <div class="container">
+    <mat-card class="card" *ngIf="createNew">
+      <app-cardback-form (refreshCardbackEvent)="onSearch()" (cleanNewEvent)="createNew = false"></app-cardback-form>
+    </mat-card>
+    <mat-card class="card" *ngFor="let cardback of cardbacks">
+      <ng-container *ngIf="cardback.isEdit">
+        <app-cardback-form (refreshCardbackEvent)="onSearch()" [cardback]="cardback"></app-cardback-form>
+      </ng-container>
+      <mat-card-header *ngIf="!cardback.isEdit">
+        <mat-card-title-group>
+          <mat-card-title>{{cardback.name}}</mat-card-title>
+          <mat-card-subtitle>{{cardback.howToGet}}</mat-card-subtitle>
+          <img mat-card-md-image src="{{cardback.img}}"  alt="Image of {{cardback.name}}">
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content *ngIf="!cardback.isEdit">
+        {{cardback.description}}
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-actions>
+        <button mat-icon-button (click)="onUpdate(cardback)" color="accent" aria-label="Edit cardback">
+          <mat-icon>{{cardback.isEdit? 'edit_off': 'edit'}}</mat-icon>
+        </button>
+        <button mat-icon-button (click)="onDelete(cardback.cardBackId)" [disabled]="cardback.isEdit" color="warn" aria-label="Delete cardback">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
