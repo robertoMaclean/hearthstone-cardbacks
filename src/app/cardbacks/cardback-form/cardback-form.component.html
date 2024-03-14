@@ -3,18 +3,30 @@
     <mat-form-field class="form-input">
       <mat-label>Name</mat-label>
       <input matInput id="name" type="text" formControlName="name">
+      <mat-error *ngIf="cardbackForm.controls['name'].hasError('required')">Name is required</mat-error>
+      <mat-error *ngIf="cardbackForm.controls['name'].hasError('minlength')">Min lenght is 3</mat-error>
+      <mat-error *ngIf="cardbackForm.controls['name'].hasError('maxlength')">Limit exceed</mat-error>
     </mat-form-field>
     <mat-form-field class="form-input">
       <mat-label>How to acquired</mat-label>
       <input matInput id="howToGet" type="text" formControlName="howToGet">
+      <mat-error *ngIf="cardbackForm.controls['howToGet'].hasError('minlength')">Min lenght is 10</mat-error>
+      <mat-error *ngIf="cardbackForm.controls['howToGet'].hasError('maxlength')">Limit exceed</mat-error>
     </mat-form-field>
     <mat-form-field class="form-input">
       <mat-label>Image URL</mat-label>
       <input matInput id="img" type="text" formControlName="img">
+      <mat-error *ngIf="cardbackForm.controls['img'].hasError('required')">Image URL is required</mat-error>
+      <mat-error *ngIf="cardbackForm.controls['img'].hasError('minlength')">Min lenght is 10</mat-error>
+      <mat-error *ngIf="cardbackForm.controls['img'].hasError('maxlength')">Limit exceed</mat-error>
+      <mat-error *ngIf="cardbackForm.controls['img'].hasError('pattern')">URL format is not valid</mat-error>
     </mat-form-field>
     <mat-form-field class="form-input">
       <mat-label>Description</mat-label>
       <textarea matInput matInput id="description" formControlName="description"></textarea>
+      <mat-error *ngIf="cardbackForm.controls['description'].hasError('required')">Description is required</mat-error>
+      <mat-error *ngIf="cardbackForm.controls['description'].hasError('minlength')">Min lenght is 10</mat-error>
+      <mat-error *ngIf="cardbackForm.controls['description'].hasError('maxlength')">Limit exceed</mat-error>
     </mat-form-field>
     <button mat-raised-button color="accent" type="submit" [disabled]="!cardbackForm.valid">Submit</button>
   </div>

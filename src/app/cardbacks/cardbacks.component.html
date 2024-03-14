@@ -4,10 +4,9 @@
     <input matInput [(ngModel)]="searchInput" #search (keyup)="onSearch()" placeholder="Ex. Titanic">
   </mat-form-field>
 </div>
-
 <div class="container">
   <div class="container">
-    <button mat-fab (click)="createNew = !createNew" color="primary">
+    <button class="grow-1" mat-fab (click)="createNew = !createNew" color="primary">
       <mat-icon>{{!createNew?'fiber_new': 'cancel'}}</mat-icon>
     </button>
   </div>
