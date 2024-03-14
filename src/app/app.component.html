@@ -1,6 +1,12 @@
 <main class="main">
+  <mat-progress-bar *ngIf="loading" color="accent"  mode="indeterminate"></mat-progress-bar>
+  <p>
+    <mat-toolbar color="primary">
+      <span>HearthStone Cardbacks</span>
+      <img src="/assets/img/Hearthstone-Logo.webp" width="60">
+    </mat-toolbar>
+  </p>
   <div class="content">
-    <mat-progress-bar *ngIf="loading"  mode="indeterminate"></mat-progress-bar>
     <app-cardbacks (loadingEvent)="setLoader($event)"></app-cardbacks>
   </div>
 </main>
