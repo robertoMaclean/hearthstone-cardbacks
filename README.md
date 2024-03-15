@@ -10,11 +10,13 @@ Este proyecto fue generado con [Angular CLI](https://github.com/angular/angular-
 
 ## ¿Cómo Iniciar?
 
-- Clonar el proyecto.
+### Clonar el proyecto.
 
 ```bash
 git clone https://github.com/robertoMaclean/hearthstone-cardbacks.git
 ```
+
+### Levantar el proyecto
 
 Ejecutar `ng serve` para correr en local la aplicación. Ir a `http://localhost:4200/`. La aplicación automáticamente se refrescará al detectar los cambios.
 
