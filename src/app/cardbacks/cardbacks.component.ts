@@ -34,14 +34,14 @@ export class CardbacksComponent {
   createNew = false;
   @Output() loadingEvent = new EventEmitter<boolean>();
 
-  constructor(private cardbackService: CardbacksService) {}
+  constructor(private cardbackService: CardbacksService) { }
 
-  ngOnInit(): void {
-    this.cardbackService.getCardbacks().subscribe((resp) => {
-      this.cardbacks = resp;
-      this.loadingEvent.emit(false);
-      this.cardbackService.saveCardbacksInLocalStorage(this.cardbacks);
-    });
+  async ngOnInit() {
+    this.cardbacks = await this.cardbackService.getCardBack();
+    console.log('cardbacks: ' + this.cardbacks);
+    console.log(JSON.stringify(this.cardbacks));
+    this.loadingEvent.emit(false);
+    this.cardbackService.saveCardbacksInLocalStorage(this.cardbacks);
   }
 
   onDelete(cardbackId: number): void {

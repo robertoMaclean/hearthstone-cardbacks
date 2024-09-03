@@ -1,29 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Cardback } from './carback';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CardbacksService {
-  constructor(private http: HttpClient) {}
+  private getCard = '/.netlify/functions/hearthstone';
 
-  getCardbacks(): Observable<Cardback[]> {
-    let headers = new HttpHeaders();
-    headers = headers
-      .set(
-        'X-RapidAPI-Key',
-        'ea6bd29831msh717c9816fd38315p1993f8jsn1a0141e134f5'
-      )
-      .set('X-RapidAPI-Host', 'omgvamp-hearthstone-v1.p.rapidapi.com');
+  constructor() {}
 
-    return this.http.get<Cardback[]>(
-      'https://omgvamp-hearthstone-v1.p.rapidapi.com/cardbacks',
-      {
-        headers,
+  async getCardBack(): Promise<any> {
+    try {
+      const response = await fetch(this.getCard);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      throw error;
+    }
   }
 
   deleteCardback(cardBackId: number): void {
