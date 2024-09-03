@@ -25,8 +25,6 @@ export class AppComponent {
   loading = true;
 
   setLoader(isLoading: boolean) {
-    console.log('current loading', this.loading);
     this.loading = isLoading;
-    console.log('change to', this.loading);
   }
 }
