@@ -1,15 +1,20 @@
 [build]
+  # Production build configuration
   publish = "dist/hearth-stone-app/browser"
   command = "npm run build:prod"
   functions = "netlify/functions"
 
+# Default development configuration (Development environment)
 [dev]
   framework = "#custom"
-  command = "ng serve"
+  command = "npm run start"
   port = 8888
   targetPort = 4200
   functionsPort = 8888
   autoLaunch = true
+
+# Note: To run with production configuration locally, use:
+# netlify dev -c "npm run start:prod"
 
 # Redirect API calls to the Netlify Functions
 [[redirects]]

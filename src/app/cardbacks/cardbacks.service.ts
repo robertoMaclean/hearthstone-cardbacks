@@ -3,7 +3,7 @@ import { Cardback } from './carback';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { catchError, map, retry, tap, switchMap } from 'rxjs/operators';
-import { environment } from '../../environment/environment';
+import { environment } from '../../environments/environment';
 
 // Interface for the API response
 interface CardbacksResponse {
@@ -20,6 +20,7 @@ export class CardbacksService {
 
   // Determine the appropriate base URL based on environment
   private getApiUrl(): string {
+    console.log('api url', environment.production);
     return environment.production
       ? this.NETLIFY_FUNCTION_PATH
       : `${this.LOCAL_NETLIFY_URL}${this.NETLIFY_FUNCTION_PATH}`;
