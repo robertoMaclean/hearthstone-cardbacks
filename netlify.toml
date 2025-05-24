@@ -1,0 +1,25 @@
+[build]
+  publish = "dist/hearth-stone-app/browser"
+  command = "npm run build"
+  functions = "netlify/functions"
+
+[dev]
+  framework = "#custom"
+  command = "ng serve"
+  port = 8888
+  targetPort = 4200
+  functionsPort = 8888
+  autoLaunch = true
+
+# Redirect API calls to the Netlify Functions
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Redirect all requests to index.html for Angular's router
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+

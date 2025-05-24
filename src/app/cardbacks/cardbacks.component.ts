@@ -36,12 +36,34 @@ export class CardbacksComponent {
 
   constructor(private cardbackService: CardbacksService) { }
 
-  async ngOnInit() {
-    this.cardbacks = await this.cardbackService.getCardBack();
-    console.log('cardbacks: ' + this.cardbacks);
-    console.log(JSON.stringify(this.cardbacks));
-    this.loadingEvent.emit(false);
-    this.cardbackService.saveCardbacksInLocalStorage(this.cardbacks);
+  ngOnInit() {
+    // Set loading state to true initially
+    this.loadingEvent.emit(true);
+
+    this.cardbackService.getCardBack().subscribe({
+      next: (cardbacks) => {
+        // Directly assign the cardbacks array
+        console.log('Response from service:', cardbacks);
+        this.cardbacks = cardbacks;
+
+        console.log('cardbacks assigned: ', this.cardbacks);
+
+        // Save to localStorage for offline use
+        this.cardbackService.saveCardbacksInLocalStorage(this.cardbacks);
+
+        // Update loading state
+        this.loadingEvent.emit(false);
+      },
+      error: (error) => {
+        console.error('Failed to load cardbacks:', error);
+
+        // Try to load from localStorage as fallback
+        this.cardbacks = this.cardbackService.getCardbacksFromLocalStorage();
+
+        // Update loading state even on error
+        this.loadingEvent.emit(false);
+      },
+    });
   }
 
   onDelete(cardbackId: number): void {

@@ -1,27 +1,74 @@
 import { Injectable } from '@angular/core';
 import { Cardback } from './carback';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError, of } from 'rxjs';
+import { catchError, map, retry, tap, switchMap } from 'rxjs/operators';
+import { environment } from '../../environment/environment';
+
+// Interface for the API response
+interface CardbacksResponse {
+  cardBacks: Cardback[];
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class CardbacksService {
-  private getCard = '/.netlify/functions/hearthstone';
+  private readonly NETLIFY_FUNCTION_PATH = '/.netlify/functions/hearthstone';
+  private readonly LOCAL_NETLIFY_URL = 'http://localhost:8888';
+  public cardBacks: any[] = [];
 
-  constructor() {}
+  // Determine the appropriate base URL based on environment
+  private getApiUrl(): string {
+    return environment.production
+      ? this.NETLIFY_FUNCTION_PATH
+      : `${this.LOCAL_NETLIFY_URL}${this.NETLIFY_FUNCTION_PATH}`;
+  }
 
-  async getCardBack(): Promise<any> {
-    try {
-      const response = await fetch(this.getCard);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+  constructor(private http: HttpClient) { }
+
+  getCardBack(): Observable<Cardback[]> {
+    const apiUrl = this.getApiUrl();
+
+    return this.http.get<any>(apiUrl).pipe(
+      retry(1), // Retry once on failure
+      tap((response) => (this.cardBacks = response)), // Log the response for debugging
+
+      catchError((error) => {
+        // If we're in development and get a network error, it might be due to CORS or Netlify function issues
+        if (!environment.production && error instanceof HttpErrorResponse) {
+          console.warn('Development environment API error:', error);
+          console.info('Falling back to localStorage data');
+
+          // Return the data from localStorage as a fallback in dev mode
+          return of(this.getCardbacksFromLocalStorage());
+        }
+
+        // Otherwise use standard error handling
+        return this.handleError(error);
+      })
+    );
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = '';
+
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+      errorMessage = `Client Error: ${error.error.message}`;
+    } else {
+      // Server-side error
+      errorMessage = `Server Error Code: ${error.status}\nMessage: ${error.message}`;
+
+      // Log the raw response if available
+      console.log(error);
+      if (error.error) {
+        console.error('Server response body:', error.error);
       }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      throw error;
     }
+
+    console.error('API Error:', errorMessage);
+    return throwError(() => new Error(errorMessage));
   }
 
   deleteCardback(cardBackId: number): void {
