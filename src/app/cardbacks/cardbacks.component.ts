@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { CardbackFormComponent } from './cardback-form/cardback-form.component';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-cardbacks',
@@ -24,15 +25,23 @@ import { CardbackFormComponent } from './cardback-form/cardback-form.component';
     MatDividerModule,
     MatInputModule,
     CardbackFormComponent,
+    MatPaginatorModule,
   ],
   templateUrl: './cardbacks.component.html',
   styleUrl: './cardbacks.component.scss',
 })
 export class CardbacksComponent {
-  cardbacks: Cardback[] = [];
+  allCardbacks: Cardback[] = []; // Store all cardbacks from localStorage
+  cardbacks: Cardback[] = []; // Cardbacks currently displayed (paginated)
   searchInput = '';
   createNew = false;
   @Output() loadingEvent = new EventEmitter<boolean>();
+
+  // Pagination properties
+  pageSize = 10;
+  pageIndex = 0;
+  pageSizeOptions: number[] = [5, 10, 25, 50];
+  length = 0; // Total number of items
 
   constructor(private cardbackService: CardbacksService) { }
 
@@ -42,40 +51,41 @@ export class CardbacksComponent {
 
     this.cardbackService.getCardBack().subscribe({
       next: (cardbacks) => {
-        // Directly assign the cardbacks array
-        console.log('Response from service:', cardbacks);
-        this.cardbacks = cardbacks;
-
-        console.log('cardbacks assigned: ', this.cardbacks);
-
-        // Save to localStorage for offline use
-        this.cardbackService.saveCardbacksInLocalStorage(this.cardbacks);
-
-        // Update loading state
+        this.allCardbacks = cardbacks;
+        this.cardbackService.saveCardbacksInLocalStorage(this.allCardbacks);
+        this.applyPaginationAndSearch();
         this.loadingEvent.emit(false);
       },
       error: (error) => {
         console.error('Failed to load cardbacks:', error);
-
-        // Try to load from localStorage as fallback
-        this.cardbacks = this.cardbackService.getCardbacksFromLocalStorage();
-
-        // Update loading state even on error
+        this.allCardbacks = this.cardbackService.getCardbacksFromLocalStorage();
+        this.applyPaginationAndSearch();
         this.loadingEvent.emit(false);
       },
     });
   }
 
+  applyPaginationAndSearch() {
+    let filteredCardbacks = this.allCardbacks.filter((cardback) =>
+      cardback.name.toLowerCase().includes(this.searchInput.toLowerCase())
+    );
+
+    this.length = filteredCardbacks.length;
+    const startIndex = this.pageIndex * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.cardbacks = filteredCardbacks.slice(startIndex, endIndex);
+  }
+
   onDelete(cardbackId: number): void {
     this.cardbackService.deleteCardback(cardbackId);
-    this.onSearch();
+    this.allCardbacks = this.cardbackService.getCardbacksFromLocalStorage(); // Refresh allCardbacks after deletion
+    this.applyPaginationAndSearch();
   }
 
   onSearch() {
-    const cardbacks = this.cardbackService.getCardbacksFromLocalStorage();
-    this.cardbacks = cardbacks.filter((cardback) =>
-      cardback.name.toLowerCase().includes(this.searchInput.toLowerCase())
-    );
+    // Reset page index to 0 when searching
+    this.pageIndex = 0;
+    this.applyPaginationAndSearch();
   }
 
   onUpdate(cardback: Cardback): void {
@@ -85,5 +95,11 @@ export class CardbacksComponent {
     );
     currentEditCardback.forEach((cardback) => (cardback.isEdit = false));
     cardback.isEdit = !editState;
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.applyPaginationAndSearch();
   }
 }

@@ -58,9 +58,9 @@ Este proyecto utiliza funciones serverless de Netlify para acceder a la API de H
 - En desarrollo local, las funciones son accesibles a través de la ruta `/api/*`
 
 ### Variables de entorno
-Las funciones de Netlify requieren las siguientes variables de entorno:
-- `HEARTHSTONE_API_KEY`: Tu clave API para HearthStone
-- `HEARTHSTONE_API_HOST`: El host de la API de HearthStone
+Las funciones de Netlify requieren las siguientes variables de entorno, que can ser obtenidas de la API de Hearthstone en RapidAPI:
+- `HEARTHSTONE_API_KEY`: Tu clave API para HearthStone (de RapidAPI)
+- `HEARTHSTONE_API_HOST`: El host de la API de HearthStone (de RapidAPI)
 
 Estas variables deben configurarse en un archivo `.env` en la raíz del proyecto para desarrollo local, o en la configuración de Netlify para producción.
 

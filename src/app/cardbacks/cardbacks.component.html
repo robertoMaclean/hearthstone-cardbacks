@@ -39,4 +39,12 @@
       </mat-card-actions>
     </mat-card>
   </div>
+  <mat-paginator
+    [length]="length"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="handlePageEvent($event)"
+    aria-label="Select page"
+  >
+  </mat-paginator>
 </div>
